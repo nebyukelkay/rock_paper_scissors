@@ -1,73 +1,108 @@
-//funtion to play the game the round given
+let rockbutton=document.getElementById("first-button");
+let paperbutton=document.getElementById("second-button");
+let scissorsbutton=document.getElementById("third-button");
+let displaydiv=document.getElementById("display");
+let humanselection=document.getElementById("humansum");
+let computerselection=document.getElementById("computersum");
+let playAgainButton = document.createElement("button");
 
-function playRound(roundNum) {
+
+  rockbutton.addEventListener("click", playRound)
+  paperbutton.addEventListener("click",playRound)
+  scissorsbutton.addEventListener("click",playRound)
+
   let computerSum = 0;
   let humanSum = 0;
-  for (let i = 1; i <= roundNum; i++) {
+  let roundsplayed=0;
+function playRound(e) {
+  if(roundsplayed<5){
+
     //comsputers random selection funciton from rock,paper and scissors
     let getComputerchoice = () => {
       let options = ["rock", "paper", "scissors"];
-
+    
       let optionsResult = Math.floor(Math.random() * options.length);
       return options[optionsResult];
     };
-
-    //human selection function from rock,paper and scissors by entering in prompt
-    let getHumanChoice = () => {
-      let options = prompt("Enter from rock,paper or scissors").toLowerCase();
-      if (options != "rock" && options != "paper" && options != "scissors") {
-        return "Enter valid value";
-      } else {
-        return options;
-      }
-    };
-    //putting return of computer and human selections on variable, because it helps to pass variables as an arguement
     let computerSelection = getComputerchoice();
-    let humanSelection = getHumanChoice();
-
+  // human selection function from rock,paper and scissors by entering in prompt
+    let humanSelection=e.target.value;   
+   
     //function to play the game by accepting parameters
     let playGame = (computerSelection, humanSelection) => {
       if ((computerSelection=="paper"&&humanSelection=="paper")||
         (computerSelection == "rock" && humanSelection == "rock") ||
         (computerSelection == "scissors" && humanSelection == "scissors")
       ) {
-        return "tie";
+        displaydiv.textContent="tie";
+        
+        
       } else if (computerSelection == "rock" && humanSelection == "paper") {
         humanSum = humanSum + 1;
-        return "you win by paper";
+        humanselection.textContent=humanSum;
+        displaydiv.textContent="you win by paper"
       } else if (computerSelection == "paper" && humanSelection == "rock") {
         computerSum = computerSum + 1;
-        return "computer win by paper";
+
+        computerselection.textContent=computerSum;
+        displaydiv.textContent="computer win by paper"
       } else if (computerSelection == "rock" && humanSelection == "scissors") {
         computerSum = computerSum + 1;
-        return "computer win by rock";
+        computerselection.textContent=computerSum;
+        displaydiv.textContent="computer win by rock";
       } else if (computerSelection == "paper" && humanSelection == "scissors") {
         humanSum = humanSum + 1;
-        return "you win by scissors";
+        humanselection.textContent=humanSum;
+        displaydiv.textContent="you win by scissors"
       } else if (computerSelection == "scissors" && humanSelection == "paper") {
         computerSum = computerSum + 1;
-        return "computer win by scissors";
+        
+        computerselection.textContent=computerSum;
+        displaydiv.textContent="computer win by scissors"
       } else if (computerSelection == "scissors" && humanSelection == "rock") {
         humanSum = humanSum + 1;
-        return "you win by rock";
-      } else {
-        return "Enter valied value";
-      }
+        humanselection.textContent=humanSum;
+        displaydiv.textContent="you win by rock"
+      } 
+      
     };
-    console.log(playGame(computerSelection, humanSelection));
-  }
+        playGame(computerSelection, humanSelection);
+  
+        computerselection.textContent=computerSum;
+        humanselection.textContent=humanSum;
   //displaying each players sum result
 
-  console.log(`computer : ${computerSum}`);
-  console.log(`human : ${humanSum}`);
+  roundsplayed++
+  
   //display who wins the given round game
-  if (computerSum > humanSum) {
-    console.log(`Computer wins  ${computerSum}:${humanSum}`);
-  } else if (humanSum > computerSum) {
-    console.log(`you win  ${humanSum}:${computerSum}`);
-  } else {
-    console.log("you draw! play again!!!");
   }
-}
-let round = parseInt(prompt("Enter the round you want to play!"));
-playRound(round);
+    if (roundsplayed == 5) {
+      if (computerSum > humanSum) {
+        displaydiv.textContent = "Computer wins the game!";
+      } else if (humanSum > computerSum) {
+        displaydiv.textContent = "You win the game!";
+      } else {
+        displaydiv.textContent = "It's a tie!";
+      }
+      displaydiv.appendChild(playAgainButton);
+      playAgainButton.textContent = "Play Again";
+      playAgainButton.addEventListener("click", resetGame);
+    }
+  }
+ 
+  function resetGame() {
+    roundsplayed = 0;
+    computerSum = 0;
+    humanSum = 0;
+    displaydiv.textContent = "";
+    humanselection.textContent = "";
+    computerselection.textContent = "";
+  
+    // Remove the playAgainButton from the document body
+    if (playAgainButton.parentNode) {
+      playAgainButton.parentNode.removeChild(playAgainButton);
+    }
+  }
+
+
+

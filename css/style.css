@@ -1,0 +1,12 @@
+#result-div{
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+}
+#display{
+    text-align: center;
+    margin-bottom: 30px;
+}
+#main-div{
+    display: flex;
+}
